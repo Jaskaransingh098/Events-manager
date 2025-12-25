@@ -1,36 +1,241 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🗓️ Events Manager — Full Stack + Web3
 
-## Getting Started
+A full-stack Events Management module built with Next.js App Router, demonstrating clean architecture, strong type safety, backend CRUD APIs, frontend integration, and a minimal Web3 (Solana) NFT feature.
 
-First, run the development server:
+This project was built as part of a Full-Stack Developer hiring assignment, focusing not only on functionality but also on code quality, ownership, and production readiness.
 
-```bash
+🚀 Live Demo
+
+🔗 Deployed on Vercel
+
+(Add your Vercel deployment URL here)
+
+📌 Features
+✅ Core Features
+
+Create, read, update, and delete events
+
+Event list page with loading & error states
+
+Event detail page with edit & delete options
+
+Fully responsive UI
+
+Clean separation of concerns (services, API routes, UI)
+
+🧠 Engineering Focus
+
+Strong TypeScript usage (type aliases only)
+
+Input validation with Zod
+
+Reusable services & utilities
+
+Proper error handling
+
+Production-safe environment variable usage
+
+🟣 Web3 Bonus Feature
+
+Mint an Event NFT on Solana Devnet
+
+Phantom wallet integration
+
+NFT mint address persisted in database
+
+NFT status & Solana Explorer link shown in UI
+
+🧱 Tech Stack
+Frontend
+
+Next.js (App Router)
+
+TypeScript
+
+Tailwind CSS
+
+React Query (TanStack Query)
+
+Framer Motion (optional animations)
+
+Backend
+
+Next.js API Routes
+
+TypeScript
+
+Drizzle ORM
+
+MySQL
+
+Web3
+
+Solana Web3.js
+
+Metaplex JS SDK
+
+Phantom Wallet
+
+Solana Devnet
+
+Database
+
+MySQL (Railway hosted)
+
+Deployment
+
+Vercel (Frontend + Backend)
+
+🗂️ Project Structure
+src/
+├── app/
+│   ├── api/
+│   │   └── events/
+│   │       ├── route.ts
+│   │       └── [id]/route.ts
+│   ├── events/
+│   │   ├── page.tsx
+│   │   ├── create/page.tsx
+│   │   └── [id]/page.tsx
+│   └── layout.tsx
+│
+├── db/
+│   └── schema.ts
+│
+├── services/
+│   └── event.service.ts
+│
+├── lib/
+│   ├── db.ts
+│   └── validators.ts
+│
+└── app/globals.css
+
+🧩 Event Data Model
+
+The Event schema was designed as part of the task:
+
+{
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+  imageUrl?: string;
+  nftMintAddress?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+🔌 API Endpoints
+Method	Endpoint	Description
+POST	/api/events	Create event
+GET	/api/events	Get all events
+GET	/api/events/:id	Get single event
+PUT	/api/events/:id	Update event
+DELETE	/api/events/:id	Delete event
+
+All endpoints:
+
+Are fully typed
+
+Use Zod for validation
+
+Handle errors gracefully
+
+🟣 Web3 NFT Integration (Bonus)
+
+Each event can be minted as an NFT on Solana Devnet.
+
+How it works:
+
+User connects Phantom Wallet
+
+Clicks Mint Event NFT
+
+NFT is minted using Metaplex
+
+Mint address is stored in DB
+
+UI updates to show:
+
+NFT minted status
+
+Mint address
+
+Link to Solana Explorer
+
+This demonstrates:
+
+Wallet connection
+
+Transaction signing
+
+Blockchain interaction
+
+Persistent on-chain reference
+
+🛠️ Environment Variables
+Required
+DATABASE_URL=mysql://user:password@host:port/database
+
+
+Used both locally and in production
+
+Never hardcoded in source code
+
+🧪 Local Development
+1️⃣ Install dependencies
+npm install
+
+2️⃣ Set up .env
+DATABASE_URL=your_local_or_cloud_mysql_url
+
+3️⃣ Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+App runs on:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000
 
-## Learn More
+🌍 Production Deployment
+Database
 
-To learn more about Next.js, take a look at the following resources:
+MySQL hosted on Railway
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Tables created manually via MySQL client
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Fully compatible with any MySQL-compatible provider
 
-## Deploy on Vercel
+Hosting
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+App deployed on Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Frontend + API routes deployed together
+
+Environment variables managed via Vercel dashboard
+
+⚠️ Notes & Assumptions
+
+Solana NFTs are minted on Devnet (no real value)
+
+NFT metadata uses a lightweight JSON endpoint for simplicity
+
+Tailwind CSS v4 is used
+
+Database credentials are managed securely via environment variables
+
+Web3 implementation is intentionally minimal to prioritize clarity
+
+
+👤 Author
+
+Jaskaran Singh
+Full-Stack Developer
+Focused on clean architecture, scalable systems, and modern Web technologies.
+
+✅ Final Note
+
+This project intentionally balances real-world practices with assignment scope, prioritizing maintainability, clarity, and correctness over unnecessary complexity.
