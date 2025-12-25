@@ -48,14 +48,12 @@ export default function EditEventPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updated),
       });
-
       if (!res.ok) throw new Error("Failed to update event");
-
-      return res.json(); 
+      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["events"] });
-      queryClient.invalidateQueries({ queryKey: ["event", id] }); 
+      queryClient.invalidateQueries({ queryKey: ["event", id] });
       router.push(`/events/${id}`);
     },
   });
@@ -68,112 +66,123 @@ export default function EditEventPage() {
   ) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-12">
-      <div className="max-w-5xl mx-auto bg-white border rounded-lg">
+    <div className="min-h-screen bg-[#0b0f16] p-8">
+      <div className="max-w-5xl mx-auto space-y-6">
         {/* Header */}
-        <div className="border-b px-8 py-6">
+        <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Edit Event</h1>
-          <p className="text-sm text-gray-600">
-            Update the details of your event below.
-          </p>
+
+          <button
+            onClick={() => router.push(`/events/${id}`)}
+            className="btn-ghost"
+          >
+            ← Back to Event
+          </button>
         </div>
 
-        {/* Form */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            mutation.mutate(form);
-          }}
-          className="px-8 py-8 space-y-6"
-        >
-          {/* Row 1 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Field label="Event Title *">
-              <input
-                name="title"
-                value={form.title}
+        {/* Card */}
+        <div className="card p-8">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              mutation.mutate(form);
+            }}
+            className="space-y-8"
+          >
+            {/* Row 1 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Field label="Event Title *">
+                <input
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+
+              <Field label="Location *">
+                <input
+                  name="location"
+                  value={form.location}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+
+              <Field label="Image URL">
+                <input
+                  name="imageUrl"
+                  value={form.imageUrl || ""}
+                  onChange={handleChange}
+                  className="input-dark"
+                />
+              </Field>
+            </div>
+
+            {/* Row 2 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Field label="Start Date & Time *">
+                <input
+                  type="datetime-local"
+                  name="startDate"
+                  value={form.startDate}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+
+              <Field label="End Date & Time *">
+                <input
+                  type="datetime-local"
+                  name="endDate"
+                  value={form.endDate}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+            </div>
+
+            {/* Description */}
+            <Field label="Description *">
+              <textarea
+                name="description"
+                value={form.description}
                 onChange={handleChange}
+                rows={4}
                 required
-                className="input"
+                className="input-dark resize-none"
               />
             </Field>
 
-            <Field label="Location *">
-              <input
-                name="location"
-                value={form.location}
-                onChange={handleChange}
-                required
-                className="input"
-              />
-            </Field>
+            {/* Error */}
+            {mutation.isError && (
+              <p className="text-sm text-red-400">Failed to update event</p>
+            )}
 
-            <Field label="Image URL">
-              <input
-                name="imageUrl"
-                value={form.imageUrl || ""}
-                onChange={handleChange}
-                className="input"
-              />
-            </Field>
-          </div>
+            {/* Actions */}
+            <div className="flex justify-end gap-4 pt-6 border-t border-white/10">
+              <button
+                type="button"
+                onClick={() => router.push(`/events/${id}`)}
+                className="btn-ghost"
+              >
+                Cancel
+              </button>
 
-          {/* Row 2 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Field label="Start Date & Time *">
-              <input
-                type="datetime-local"
-                name="startDate"
-                value={form.startDate}
-                onChange={handleChange}
-                required
-                className="input"
-              />
-            </Field>
-
-            <Field label="End Date & Time *">
-              <input
-                type="datetime-local"
-                name="endDate"
-                value={form.endDate}
-                onChange={handleChange}
-                required
-                className="input"
-              />
-            </Field>
-          </div>
-
-          {/* Description */}
-          <Field label="Description *">
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              rows={4}
-              required
-              className="input resize-none"
-            />
-          </Field>
-
-          {/* Actions */}
-          <div className="flex justify-end gap-4 pt-6 border-t">
-            <button
-              type="button"
-              onClick={() => router.push(`/events/${id}`)}
-              className="px-4 py-2 text-sm border rounded hover:bg-gray-100"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              disabled={mutation.isPending}
-              className="px-6 py-2 text-sm font-semibold bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-            >
-              {mutation.isPending ? "Updating…" : "Update Event"}
-            </button>
-          </div>
-        </form>
+              <button
+                type="submit"
+                disabled={mutation.isPending}
+                className="btn-primary"
+              >
+                {mutation.isPending ? "Updating…" : "Update Event"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -189,7 +198,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1">
+      <label className="block text-xs font-medium text-gray-400 mb-1">
         {label}
       </label>
       {children}

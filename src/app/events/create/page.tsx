@@ -3,7 +3,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-// import "./globals.css";
 
 type EventInput = {
   title: string;
@@ -48,122 +47,126 @@ export default function CreateEventPage() {
   ) => setForm({ ...form, [e.target.name]: e.target.value });
 
   return (
-    <div className="min-h-screen bg-black px-6 py-10">
-      <div className="max-w-5xl mx-auto bg-white border rounded-xl">
-        {/* Section Header */}
-        <div className="border-b px-6 py-4">
-          <h1 className="text-lg font-semibold">
-            Create Event – Detail Information
-          </h1>
+    <div className="min-h-screen bg-[#0b0f16] p-8">
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Create Event</h1>
+
+          <button onClick={() => router.push("/events")} className="btn-ghost">
+            ← Back to Events
+          </button>
         </div>
 
-        {/* Form */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            mutation.mutate(form);
-          }}
-          className="px-6 py-6 space-y-6"
-        >
-          {/* Row 1 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Field label="Event Title *">
-              <input
-                name="title"
-                value={form.title}
+        {/* Card */}
+        <div className="card p-8">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              mutation.mutate(form);
+            }}
+            className="space-y-8"
+          >
+            {/* Row 1 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Field label="Event Title *">
+                <input
+                  name="title"
+                  value={form.title}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+
+              <Field label="Location *">
+                <input
+                  name="location"
+                  value={form.location}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+
+              <Field label="Image URL">
+                <input
+                  name="imageUrl"
+                  value={form.imageUrl}
+                  onChange={handleChange}
+                  className="input-dark"
+                />
+              </Field>
+            </div>
+
+            {/* Row 2 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Field label="Start Date & Time *">
+                <input
+                  type="datetime-local"
+                  name="startDate"
+                  value={form.startDate}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+
+              <Field label="End Date & Time *">
+                <input
+                  type="datetime-local"
+                  name="endDate"
+                  value={form.endDate}
+                  onChange={handleChange}
+                  required
+                  className="input-dark"
+                />
+              </Field>
+            </div>
+
+            {/* Description */}
+            <Field label="Description *">
+              <textarea
+                name="description"
+                value={form.description}
                 onChange={handleChange}
+                rows={4}
                 required
-                className="input"
+                className="input-dark resize-none"
               />
             </Field>
 
-            <Field label="Location *">
-              <input
-                name="location"
-                value={form.location}
-                onChange={handleChange}
-                required
-                className="input"
-              />
-            </Field>
+            {/* Error */}
+            {mutation.isError && (
+              <p className="text-sm text-red-400">Failed to create event</p>
+            )}
 
-            <Field label="Image URL">
-              <input
-                name="imageUrl"
-                value={form.imageUrl}
-                onChange={handleChange}
-                className="input"
-              />
-            </Field>
-          </div>
+            {/* Actions */}
+            <div className="flex justify-end gap-4 pt-6 border-t border-white/10">
+              <button
+                type="button"
+                onClick={() => router.push("/events")}
+                className="btn-ghost"
+              >
+                Cancel
+              </button>
 
-          {/* Row 2 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field label="Start Date & Time *">
-              <input
-                type="datetime-local"
-                name="startDate"
-                value={form.startDate}
-                onChange={handleChange}
-                required
-                className="input"
-              />
-            </Field>
-
-            <Field label="End Date & Time *">
-              <input
-                type="datetime-local"
-                name="endDate"
-                value={form.endDate}
-                onChange={handleChange}
-                required
-                className="input"
-              />
-            </Field>
-          </div>
-
-          {/* Row 3 */}
-          <Field label="Description *">
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              rows={3}
-              required
-              className="input resize-none"
-            />
-          </Field>
-
-          {/* Error */}
-          {mutation.isError && (
-            <p className="text-sm text-red-600">Failed to create event</p>
-          )}
-
-          {/* Footer Actions */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <button
-              type="button"
-              onClick={() => router.push("/events")}
-              className="px-4 py-2 text-sm border rounded hover:bg-gray-100"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              disabled={mutation.isPending}
-              className="px-6 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-            >
-              {mutation.isPending ? "Saving..." : "Add Event"}
-            </button>
-          </div>
-        </form>
+              <button
+                type="submit"
+                disabled={mutation.isPending}
+                className="btn-primary"
+              >
+                {mutation.isPending ? "Saving…" : "Create Event"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 }
 
-/* ---------- Small reusable field ---------- */
+
 function Field({
   label,
   children,
@@ -173,7 +176,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1">
+      <label className="block text-xs font-medium text-gray-400 mb-1">
         {label}
       </label>
       {children}
