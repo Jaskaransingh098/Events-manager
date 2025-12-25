@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
-import { eventSchema } from "@/lib/validators";
 import {
     getEventById,
     updateEvent,
     deleteEvent,
 } from "@/services/event.service";
 
-/* ---------- GET: Single Event ---------- */
 export async function GET(
-    _req: Request,
+    _request: Request,
     context: { params: Promise<{ id: string }> }
 ) {
     try {
@@ -23,7 +21,7 @@ export async function GET(
             );
         }
 
-        return NextResponse.json(event, { status: 200 });
+        return NextResponse.json(event);
     } catch (error) {
         return NextResponse.json(
             { message: "Failed to fetch event" },
@@ -32,33 +30,27 @@ export async function GET(
     }
 }
 
-/* ---------- PUT: Update Event ---------- */
 export async function PUT(
-    req: Request,
+    request: Request,
     context: { params: Promise<{ id: string }> }
 ) {
     try {
         const { id } = await context.params;
-        const body = await req.json();
-        const validatedData = eventSchema.parse(body);
+        const body = await request.json();
 
-        await updateEvent(id, validatedData);
+        const updated = await updateEvent(id, body);
 
-        return NextResponse.json(
-            { message: "Event updated successfully" },
-            { status: 200 }
-        );
+        return NextResponse.json(updated);
     } catch (error) {
         return NextResponse.json(
-            { message: "Invalid request data" },
-            { status: 400 }
+            { message: "Failed to update event" },
+            { status: 500 }
         );
     }
 }
 
-/* ---------- DELETE: Delete Event ---------- */
 export async function DELETE(
-    _req: Request,
+    _request: Request,
     context: { params: Promise<{ id: string }> }
 ) {
     try {
@@ -66,10 +58,7 @@ export async function DELETE(
 
         await deleteEvent(id);
 
-        return NextResponse.json(
-            { message: "Event deleted successfully" },
-            { status: 200 }
-        );
+        return NextResponse.json({ success: true });
     } catch (error) {
         return NextResponse.json(
             { message: "Failed to delete event" },
