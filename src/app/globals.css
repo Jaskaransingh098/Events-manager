@@ -1,26 +1,31 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0b0f16;
+  color: #e5e7eb;
+}
+
+@layer components {
+  .card {
+    @apply bg-[#121826] border border-white/10 rounded-xl;
+  }
+
+  .card-muted {
+    @apply bg-[#0f1524] border border-white/5 rounded-xl;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium;
+  }
+
+  .btn-ghost {
+    @apply border border-white/10 hover:bg-white/5 px-4 py-2 rounded-lg text-sm;
+  }
+
+  .stat-card {
+    @apply card p-5 flex flex-col gap-2;
+  }
 }
